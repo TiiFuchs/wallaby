@@ -16,7 +16,7 @@ class PassFactory extends Factory
     {
         return [
             'pass_type_id' => 'pass.one.tii.d-ticket',
-            'serial_number' => $this->faker->randomNumber(5),
+            'serial_number' => $this->faker->uuid(),
             'authentication_token' => Str::random(60),
             'last_requested_at' => Carbon::now(),
             'details_id' => DTicket::factory(),

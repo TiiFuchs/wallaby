@@ -21,7 +21,6 @@ class PassKitWebServiceController extends Controller
     {
         // Get pass
         $pass = Pass::wherePassTypeId($passTypeId)->whereSerialNumber($serialNumber)->first();
-        ray($pass);
         abort_if($pass === null, 404);
 
         // Check authorization
@@ -81,14 +80,14 @@ class PassKitWebServiceController extends Controller
         abort_if(! $device->passes()->whereId($pass->id)->exists(), 404);
 
         // Remove registration
-        $device->passes()->attach($pass);
+        $device->passes()->detach($pass);
 
         // Delete device if there are no more passes registered
         if ($device->passes()->count() === 0) {
             $device->delete();
         }
 
-        return response('', 200);
+        return response(status: 200);
     }
 
     public function listPasses(Request $request, string $deviceLibraryId, string $passTypeId)
@@ -130,7 +129,7 @@ class PassKitWebServiceController extends Controller
             'last_requested_at' => now(),
         ]);
 
-        return response()->streamDownload(fn () => $pass->generatePass());
+        return response()->streamDownload(fn () => $pass->generate(true));
     }
 
     public function logMessage(Request $request)

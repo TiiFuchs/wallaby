@@ -43,7 +43,7 @@ class Pass extends Model
 
     public function getCertificatePath(): string
     {
-        return resource_path("passes/{$this->pass_type_id}/certificate.p12");
+        return resource_path("passes/{$this->pass_type_id}/{$this->pass_type_id}.p12");
     }
 
     public function getResourceFiles(): array
@@ -54,7 +54,7 @@ class Pass extends Model
     /**
      * @throws PKPassException
      */
-    public function generatePass(): string
+    public function generate(bool $output = false): string
     {
         /** @var PassDetails $details */
         $details = $this->details;
@@ -75,6 +75,6 @@ class Pass extends Model
             $pass->addFile($file);
         }
 
-        return $pass->create();
+        return $pass->create($output);
     }
 }

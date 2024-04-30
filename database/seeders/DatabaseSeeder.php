@@ -23,8 +23,6 @@ class DatabaseSeeder extends Seeder
                 ['serial_number' => 'baz']
             )->create();
 
-        ray($passes);
-
         Device::factory(1, [
             'device_library_identifier' => 'foo',
             'push_token' => 'push_token',
