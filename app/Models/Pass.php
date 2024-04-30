@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\PassDetails\PassDetails;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -11,6 +12,8 @@ use PKPass\PKPassException;
 
 class Pass extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'pass_type_id',
         'serial_number',
@@ -29,7 +32,8 @@ class Pass extends Model
 
     public function devices(): BelongsToMany
     {
-        return $this->belongsToMany(Device::class, 'registrations');
+        return $this->belongsToMany(Device::class, 'registrations')
+            ->withTimestamps();
     }
 
     public function details(): MorphTo

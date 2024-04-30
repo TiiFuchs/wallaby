@@ -2,8 +2,12 @@
 
 namespace App\Models\PassDetails;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class DTicket extends PassDetails
 {
+    use HasFactory;
+
     protected $table = 'passes_dticket';
 
     protected function casts(): array
