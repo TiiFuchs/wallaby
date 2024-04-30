@@ -149,7 +149,6 @@ class PassKitWebServiceController extends Controller
 
         $authToken = Str::after($authorizationHeader, 'ApplePass ');
 
-        // Compare AuthToken with pass related value in database.
         if ($pass->authentication_token !== $authToken) {
             throw new InvalidPassKitAuthTokenException('Authorization is invalid');
         }
