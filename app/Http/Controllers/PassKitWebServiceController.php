@@ -49,6 +49,8 @@ class PassKitWebServiceController extends Controller
         // Register device
         $pass->devices()->attach($device);
 
+        Log::info("Registered pass {$pass->pass_type_id}/{$pass->serial_number} for device {$device->device_library_identifier}");
+
         return response(status: 201);
 
     }
@@ -82,8 +84,11 @@ class PassKitWebServiceController extends Controller
         // Remove registration
         $device->passes()->detach($pass);
 
+        Log::info("Unregistered pass {$pass->pass_type_id}/{$pass->serial_number} for device {$device->device_library_identifier}");
+
         // Delete device if there are no more passes registered
         if ($device->passes()->count() === 0) {
+            Log::info("Device {$device->device_library_identifier} has no passes left");
             $device->delete();
         }
 
@@ -107,8 +112,10 @@ class PassKitWebServiceController extends Controller
 
         abort_if($passes->isEmpty(), 204);
 
+        Log::info("Updated passes were requested since {$tag->toFormattedDateString()}");
+
         return response()->json([
-            'lastUpdated' => $passes->pluck('details.updated_at')->max()->timestamp,
+            'lastUpdated' => (string) $passes->pluck('details.updated_at')->max()->timestamp,
             'serialNumbers' => $passes->pluck('serial_number')->toArray(),
         ]);
     }
@@ -128,6 +135,11 @@ class PassKitWebServiceController extends Controller
         $pass->update([
             'last_requested_at' => now(),
         ]);
+
+        $ifModifiedSince = Carbon::parse($request->header('if-modified-since', '1.1.2024'));
+        abort_unless($pass->details->updated_at->greaterThan($ifModifiedSince), 304);
+
+        Log::info("Pass {$pass->pass_type_id}/{$pass->serial_number} was requested for download");
 
         return response()->streamDownload(fn () => $pass->generate(true));
     }
