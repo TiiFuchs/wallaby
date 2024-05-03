@@ -1,0 +1,14 @@
+{
+    "name": "ticket-parser",
+    "version": "1.0.0",
+    "description": "Parses D-Ticket and returns useful information.",
+    "main": "main.ts",
+    "scripts": {
+        "start": "node src/main.js"
+    },
+    "author": "Tii",
+    "license": "MIT",
+    "dependencies": {
+        "zebra-crossing": "^0.1.2"
+    }
+}

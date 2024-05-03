@@ -137,9 +137,12 @@ class PassKitWebServiceController extends Controller
         ]);
 
         $ifModifiedSince = Carbon::parse($request->header('if-modified-since', '1.1.2024'));
-        abort_unless($pass->details->updated_at->greaterThan($ifModifiedSince), 304);
+        if (! $pass->details->updated_at->greaterThan($ifModifiedSince)) {
+            Log::info("Pass {$pass->pass_type_id}/{$pass->serial_number} was requested for download but the pass didn't change");
+            abort(304);
+        }
 
-        Log::info("Pass {$pass->pass_type_id}/{$pass->serial_number} was requested for download");
+        Log::info("Pass {$pass->pass_type_id}/{$pass->serial_number} was requested for download and updated");
 
         return response()->streamDownload(fn () => $pass->generate(true));
     }

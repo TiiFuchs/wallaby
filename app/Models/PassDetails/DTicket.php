@@ -2,6 +2,7 @@
 
 namespace App\Models\PassDetails;
 
+use App\Casts\Base64Cast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DTicket extends PassDetails
@@ -10,10 +11,17 @@ class DTicket extends PassDetails
 
     protected $table = 'passes_dticket';
 
+    protected $fillable = [
+        'name',
+        'valid_in',
+        'barcode',
+    ];
+
     protected function casts(): array
     {
         return [
             'valid_in' => 'datetime',
+            'barcode' => Base64Cast::class,
         ];
     }
 
@@ -62,10 +70,9 @@ class DTicket extends PassDetails
 
             'barcodes' => [
                 [
-                    'altText' => 'ABCDEF',
                     'format' => 'PKBarcodeFormatAztec',
                     'message' => $this->barcode,
-                    'messageEncoding' => 'utf-8',
+                    'messageEncoding' => 'iso-8859-1',
                 ],
             ],
 
