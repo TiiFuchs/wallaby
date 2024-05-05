@@ -44,9 +44,17 @@ class DTicket extends PassDetails
 
     public function getJsonData(): array
     {
-        $dateString =
-            $this->valid_in->startOfMonth()->format('d.m. - ').
-            $this->valid_in->endOfMonth()->format('d.m.Y');
+        $dateString = $this->valid_in !== null
+            ? $this->valid_in->startOfMonth()->format('d.m. - ').$this->valid_in->endOfMonth()->format('d.m.Y')
+            : '';
+
+        $barcodes = $this->barcode !== null ? [
+            [
+                'format' => 'PKBarcodeFormatAztec',
+                'message' => $this->barcode,
+                'messageEncoding' => 'iso-8859-1',
+            ],
+        ] : [];
 
         return [
             'description' => 'D-Ticket',
@@ -88,13 +96,7 @@ class DTicket extends PassDetails
                 ],
             ],
 
-            'barcodes' => [
-                [
-                    'format' => 'PKBarcodeFormatAztec',
-                    'message' => $this->barcode,
-                    'messageEncoding' => 'iso-8859-1',
-                ],
-            ],
+            'barcodes' => $barcodes,
 
             'associatedStoreIdentifiers' => [
                 343555245,

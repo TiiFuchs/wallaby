@@ -36,15 +36,13 @@ class IncomingImage
         $filename = tempnam(storage_path('app/photos'), 'photo_');
         $file->saveTo($filename);
 
-        $barcodeWasNull = $ticket->barcode === null;
-
         $ticket->parseScreenshot($filename);
 
         unlink($filename);
 
         $ticket->pass->pushToDevices();
 
-        if ($barcodeWasNull) {
+        if ($ticket->pass->devices()->count() === 0) {
             Telepath::bot()->sendMessage(
                 chat_id: $sender->id,
                 text: 'Dein Deutschlandticket wurde erstellt.',
@@ -55,11 +53,13 @@ class IncomingImage
                     ),
                 ]])
             );
-        } else {
-            Telepath::bot()->sendMessage(
-                chat_id: $sender->id,
-                text: 'Dein Deutschlandticket wurde aktualisiert.'
-            );
+
+            return;
         }
+
+        Telepath::bot()->sendMessage(
+            chat_id: $sender->id,
+            text: 'Dein Deutschlandticket wurde aktualisiert.'
+        );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Facades\QRTerminal;
 use App\Models\PassDetails\DTicket;
 use Illuminate\Console\Command;
 
@@ -37,7 +38,7 @@ class NewDTicket extends Command
 
         $this->info("Download your pass from $link");
 
-        // QRTerminal::generate($link);
+        QRTerminal::generate($link);
 
     }
 }
