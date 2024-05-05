@@ -3,6 +3,7 @@
 namespace App\Models\PassDetails;
 
 use App\Casts\Base64Cast;
+use App\Facades\ZXParser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DTicket extends PassDetails
@@ -31,6 +32,16 @@ class DTicket extends PassDetails
         return 'pass.one.tii.d-ticket';
     }
 
+    public function parseScreenshot(string $filename): void
+    {
+        $data = ZXParser::parse($filename);
+
+        $this->update([
+            'valid_in' => now()->startOfMonth(),
+            'barcode' => $data,
+        ]);
+    }
+
     public function getJsonData(): array
     {
         $dateString =
@@ -40,6 +51,7 @@ class DTicket extends PassDetails
         return [
             'description' => 'D-Ticket',
             'organizationName' => 'D-Ticket',
+            'sharingProhibited' => true,
 
             'labelColor' => '#919191',
             'foregroundColor' => '#000000',
@@ -51,6 +63,7 @@ class DTicket extends PassDetails
                         'key' => 'valid_date',
                         'label' => 'Gültigkeitszeitraum',
                         'value' => $dateString,
+                        'changeMessage' => 'Dein Deutschlandticket wurde aktualisiert für %@.',
                     ],
                 ],
                 'secondaryFields' => [
@@ -70,6 +83,7 @@ class DTicket extends PassDetails
                         'key' => 'scope',
                         'label' => 'Geltungsbereich',
                         'value' => 'Bundesweit',
+                        'textAlignment' => 'PKTextAlignmentRight',
                     ],
                 ],
             ],

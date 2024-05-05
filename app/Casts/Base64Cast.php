@@ -9,11 +9,19 @@ class Base64Cast implements CastsAttributes
 {
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
         return base64_decode($value);
     }
 
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
         return base64_encode($value);
     }
 }
