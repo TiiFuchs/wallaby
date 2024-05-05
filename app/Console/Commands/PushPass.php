@@ -33,7 +33,8 @@ class PushPass extends Command
             $serialNumber = text('Which serial number do you wish to push?');
         }
 
-        $passes = Pass::wherePassTypeId($passTypeId)
+        $passes = Pass::with('details')
+            ->wherePassTypeId($passTypeId)
             ->when($serialNumber, fn ($query) => $query->whereSerialNumber($serialNumber))
             ->get();
 
@@ -45,6 +46,7 @@ class PushPass extends Command
 
         $this->withProgressBar($passes, function (Pass $pass) {
 
+            $pass->details->touch();
             $pass->pushToDevices();
 
         });
