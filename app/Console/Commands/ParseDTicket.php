@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Facades\ZXParser;
 use App\Models\Pass;
 use App\Models\PassDetails\DTicket;
 use Illuminate\Console\Command;
@@ -20,22 +19,17 @@ class ParseDTicket extends Command
 
         $filename = $this->argument('file');
 
-        $data = ZXParser::parse($filename);
+        /** @var DTicket $ticket */
+        $ticket = $pass->details;
 
-        /** @var DTicket $dTicket */
-        $dTicket = $pass->details;
+        $ticket->parseScreenshot($filename);
 
-        $dTicket->update([
-            'valid_in' => now()->startOfMonth(),
-            'barcode' => $data,
-        ]);
-
-        if (! $dTicket->wasChanged()) {
+        if (! $ticket->wasChanged()) {
             $this->info("Barcode didn't change.");
 
             return;
         }
 
-        $this->info("Barcode was saved to pass {$pass->serial_number} of {$dTicket->name}.");
+        $this->info("Barcode was saved to pass {$pass->serial_number} for {$ticket->name}.");
     }
 }

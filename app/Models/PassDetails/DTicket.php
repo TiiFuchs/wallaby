@@ -36,8 +36,12 @@ class DTicket extends PassDetails
     {
         $data = ZXParser::parse($filename);
 
+        $month = (now()->isLastOfMonth())
+            ? now()->startOfMonth()->addMonth()
+            : now()->startOfMonth();
+
         $this->update([
-            'valid_in' => now()->startOfMonth(),
+            'valid_in' => $month,
             'barcode' => $data,
         ]);
     }
