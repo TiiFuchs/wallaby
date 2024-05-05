@@ -33,7 +33,7 @@ class ApplePushService
         curl_setopt($ch, CURLOPT_POSTFIELDS, '{}');
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        //curl_setopt($ch, CURLOPT_VERBOSE, ! app()->environment('production'));
 
         $response = curl_exec($ch);
 
