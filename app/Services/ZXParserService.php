@@ -2,10 +2,16 @@
 
 namespace App\Services;
 
+use App\Exceptions\ZXParserException;
 use Illuminate\Support\Facades\Process;
 
 class ZXParserService
 {
+    /**
+     * @return string
+     *
+     * @throws ZXParserException
+     */
     public function parse(string $imagePath)
     {
         // Get paths
@@ -19,6 +25,10 @@ class ZXParserService
         // Run java command
         $result = Process::run($command);
         $output = $result->output();
+
+        if (str_contains($output, 'No barcode found')) {
+            throw new ZXParserException('No barcode found', 1);
+        }
 
         // Parse raw result
         $raw = substr($output, strpos($output, "Raw result:\n") + 12);

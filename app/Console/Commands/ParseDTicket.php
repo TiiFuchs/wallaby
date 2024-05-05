@@ -22,7 +22,13 @@ class ParseDTicket extends Command
         /** @var DTicket $ticket */
         $ticket = $pass->details;
 
-        $ticket->parseScreenshot($filename);
+        $success = $ticket->parseScreenshot($filename);
+
+        if (! $success) {
+            $this->error('No barcode found');
+
+            return;
+        }
 
         if (! $ticket->wasChanged()) {
             $this->info("Barcode didn't change.");

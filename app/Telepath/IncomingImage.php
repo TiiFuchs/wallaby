@@ -36,9 +36,18 @@ class IncomingImage
         $filename = tempnam(storage_path('app/photos'), 'photo_');
         $file->saveTo($filename);
 
-        $ticket->parseScreenshot($filename);
+        $success = $ticket->parseScreenshot($filename);
 
         unlink($filename);
+
+        if (! $success) {
+            Telepath::bot()->sendMessage(
+                chat_id: $sender->id,
+                text: '⚠️ Ich habe auf dem Foto keinen gültigen Code erkennen können.'
+            );
+
+            return;
+        }
 
         $ticket->pass->pushToDevices();
 

@@ -3,6 +3,7 @@
 namespace App\Models\PassDetails;
 
 use App\Casts\Base64Cast;
+use App\Exceptions\ZXParserException;
 use App\Facades\ZXParser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -32,9 +33,13 @@ class DTicket extends PassDetails
         return 'pass.one.tii.d-ticket';
     }
 
-    public function parseScreenshot(string $filename): void
+    public function parseScreenshot(string $filename): bool
     {
-        $data = ZXParser::parse($filename);
+        try {
+            $data = ZXParser::parse($filename);
+        } catch (ZXParserException) {
+            return false;
+        }
 
         $month = (now()->isLastOfMonth())
             ? now()->startOfMonth()->addMonth()
@@ -44,6 +49,8 @@ class DTicket extends PassDetails
             'valid_in' => $month,
             'barcode' => $data,
         ]);
+
+        return true;
     }
 
     public function getJsonData(): array
