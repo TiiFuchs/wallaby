@@ -30,7 +30,7 @@ class IncomingImage
 
         $photo = $update->message->photo;
         /** @var PhotoSize $originalPhoto */
-        $originalPhoto = collect($photo)->sortByDesc(fn (PhotoSize $photo) => $photo->file_size)->first();
+        $originalPhoto = collect($photo)->sortByDesc->file_size->first();
         $file = $bot->getFile($originalPhoto->file_id);
 
         $filename = tempnam(storage_path('app/photos'), 'photo_');

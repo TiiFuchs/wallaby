@@ -36,9 +36,9 @@ class NewDTicket extends Command
 
         $link = $ticket->pass->downloadLink();
 
-        $this->info("Download your pass from $link");
-
         QRTerminal::generate($link);
+
+        $this->info("Download your pass from $link");
 
     }
 }

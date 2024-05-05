@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use PKPass\PKPass;
 use PKPass\PKPassException;
@@ -55,10 +56,12 @@ class Pass extends Model
 
     public function downloadLink(): string
     {
-        return route('pass.get', [
-            'passTypeId' => $this->pass_type_id,
-            'serialNumber' => $this->serial_number,
-            'authenticationToken' => $this->authentication_token,
+        $token = Str::random(30);
+
+        Cache::put('pass-download:'.$token, $this->id, now()->addMinutes(60));
+
+        return route('pass.download', [
+            'token' => $token,
         ]);
     }
 

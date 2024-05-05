@@ -44,17 +44,25 @@ class DTicket extends PassDetails
 
     public function getJsonData(): array
     {
-        $dateString = $this->valid_in !== null
-            ? $this->valid_in->startOfMonth()->format('d.m. - ').$this->valid_in->endOfMonth()->format('d.m.Y')
-            : '';
+        $dateString = '';
+        $validIn = '';
 
-        $barcodes = $this->barcode !== null ? [
-            [
-                'format' => 'PKBarcodeFormatAztec',
-                'message' => $this->barcode,
-                'messageEncoding' => 'iso-8859-1',
-            ],
-        ] : [];
+        if ($this->valid_in !== null) {
+            $dateString = $this->valid_in->startOfMonth()->format('d.m. - ').$this->valid_in->endOfMonth()->format('d.m.Y');
+            $validIn = $this->valid_in->translatedFormat('F Y');
+        }
+
+        $barcodes = [];
+
+        if ($this->barcode !== null) {
+            $barcodes = [
+                [
+                    'format' => 'PKBarcodeFormatAztec',
+                    'message' => $this->barcode,
+                    'messageEncoding' => 'iso-8859-1',
+                ],
+            ];
+        }
 
         return [
             'description' => 'D-Ticket',
@@ -71,7 +79,6 @@ class DTicket extends PassDetails
                         'key' => 'valid_date',
                         'label' => 'Gültigkeitszeitraum',
                         'value' => $dateString,
-                        'changeMessage' => 'Dein Deutschlandticket wurde aktualisiert für %@.',
                     ],
                 ],
                 'secondaryFields' => [
@@ -93,6 +100,20 @@ class DTicket extends PassDetails
                         'value' => 'Bundesweit',
                         'textAlignment' => 'PKTextAlignmentRight',
                     ],
+                ],
+                'backFields' => [
+                    [
+                        'key' => 'valid_in',
+                        'label' => 'Gültig in',
+                        'value' => $validIn,
+                        'changeMessage' => 'Dein Deutschlandticket wurde aktualisiert für %@.',
+                    ],
+                    [
+                        'key' => 'telegram_user_id',
+                        'label' => 'Telegram User ID',
+                        'value' => $this->telegram_user_id,
+                    ],
+
                 ],
             ],
 
