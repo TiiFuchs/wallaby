@@ -112,7 +112,7 @@ class PassKitWebServiceController extends Controller
 
         abort_if($passes->isEmpty(), 204);
 
-        Log::info("Updated passes were requested since {$tag->toFormattedDateString()}");
+        Log::info("Updated passes were requested since {$tag->toDateTimeLocalString()}");
 
         return response()->json([
             'lastUpdated' => (string) $passes->pluck('details.updated_at')->max()->timestamp,

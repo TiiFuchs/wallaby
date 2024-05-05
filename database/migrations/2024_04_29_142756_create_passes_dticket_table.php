@@ -11,8 +11,9 @@ return new class extends Migration
         Schema::create('passes_dticket', function (Blueprint $table) {
             $table->id();
             $table->text('name');
-            $table->dateTime('valid_in');
-            $table->text('barcode');
+            $table->dateTime('valid_in')->nullable();
+            $table->text('barcode')->nullable();
+            $table->bigInteger('telegram_user_id')->nullable();
             $table->timestamps();
         });
     }

@@ -11,6 +11,7 @@
         "php": "^8.2",
         "dsiddharth2/php-zxing": "^1.0",
         "laravel/framework": "^11.0",
+        "laravel/prompts": "^0.1.21",
         "laravel/tinker": "^2.9",
         "pkpass/pkpass": "^2.3"
     },

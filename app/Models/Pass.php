@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Facades\ApplePush;
 use App\Models\PassDetails\PassDetails;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Str;
 use PKPass\PKPass;
 use PKPass\PKPassException;
 
@@ -22,6 +24,16 @@ class Pass extends Model
         'passdetails_id',
         'passdetails_type',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        $attributes = $attributes + [
+            'serial_number' => Str::uuid()->toString(),
+            'authentication_token' => Str::random(30),
+        ];
+
+        parent::__construct($attributes);
+    }
 
     protected function casts()
     {
@@ -41,6 +53,15 @@ class Pass extends Model
         return $this->morphTo();
     }
 
+    public function downloadLink(): string
+    {
+        return route('pass.get', [
+            'passTypeId' => $this->pass_type_id,
+            'serialNumber' => $this->serial_number,
+            'authenticationToken' => $this->authentication_token,
+        ]);
+    }
+
     public function getCertificatePath(): string
     {
         return resource_path("passes/{$this->pass_type_id}/{$this->pass_type_id}.p12");
@@ -49,6 +70,13 @@ class Pass extends Model
     public function getResourceFiles(): array
     {
         return glob(resource_path("passes/{$this->pass_type_id}/resources/").'*');
+    }
+
+    public function pushToDevices(): void
+    {
+        foreach ($this->devices as $device) {
+            ApplePush::sendPass($this, $device);
+        }
     }
 
     /**

@@ -6,4 +6,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('pass/{passTypeId}/{serialNumber}/{authenticationToken}', 'App\Http\Controllers\PassController@getPass');
+Route::get('pass/{passTypeId}/{serialNumber}/{authenticationToken}', 'App\Http\Controllers\PassController@getPass')
+    ->name('pass.get');

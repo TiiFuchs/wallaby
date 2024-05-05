@@ -15,6 +15,7 @@ class DTicket extends PassDetails
         'name',
         'valid_in',
         'barcode',
+        'telegram_user_id',
     ];
 
     protected function casts(): array
@@ -23,6 +24,11 @@ class DTicket extends PassDetails
             'valid_in' => 'datetime',
             'barcode' => Base64Cast::class,
         ];
+    }
+
+    public function getPassTypeId(): string
+    {
+        return 'pass.one.tii.d-ticket';
     }
 
     public function getJsonData(): array

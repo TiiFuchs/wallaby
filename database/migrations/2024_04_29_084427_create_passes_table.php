@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('pass_type_id');
             $table->string('serial_number');
             $table->string('authentication_token');
-            $table->timestamp('last_requested_at');
+            $table->timestamp('last_requested_at')->nullable();
             $table->unsignedBigInteger('details_id')->nullable();
             $table->string('details_type')->nullable();
             $table->timestamps();

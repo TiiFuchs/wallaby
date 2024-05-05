@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Facades\ZXParser;
 use App\Models\Pass;
 use App\Models\PassDetails\DTicket;
 use Illuminate\Console\Command;
-use PHPZxing\PHPZxingDecoder;
-use PHPZxing\ZxingImage;
 
-class DTicketParse extends Command
+class ParseDTicket extends Command
 {
     protected $signature = 'dticket:parse {serialNumber : Pass to which the barcode should be saved} {file : Path to the screenshot}';
 
@@ -21,20 +20,21 @@ class DTicketParse extends Command
 
         $filename = $this->argument('file');
 
-        $decoder = new PHPZxingDecoder([
-            'possible_formats' => 'AZTEC',
-        ]);
-        /** @var ZxingImage $data */
-        $data = $decoder->decode($filename);
+        $data = ZXParser::parse($filename);
 
         /** @var DTicket $dTicket */
         $dTicket = $pass->details;
 
-        file_put_contents(base_path('testfile.txt'), $data->getImageValue());
-
         $dTicket->update([
-            'barcode' => $data->getImageValue(),
+            'valid_in' => now()->startOfMonth(),
+            'barcode' => $data,
         ]);
+
+        if (! $dTicket->wasChanged()) {
+            $this->info("Barcode didn't change.");
+
+            return;
+        }
 
         $this->info("Barcode was saved to pass {$pass->serial_number} of {$dTicket->name}.");
     }

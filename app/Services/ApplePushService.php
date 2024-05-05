@@ -14,13 +14,10 @@ class ApplePushService
 
     public static function endpoint(): string
     {
-        return match (app()->environment()) {
-            'production' => static::PUSH_PRODUCTION_SERVER,
-            default => static::PUSH_DEVELOPMENT_SERVER,
-        };
+        return static::PUSH_PRODUCTION_SERVER;
     }
 
-    public function sendPass(Device $device, Pass $pass): void
+    public function sendPass(Pass $pass, Device $device): void
     {
         $ch = curl_init(static::endpoint()."3/device/{$device->push_token}");
 
@@ -39,11 +36,21 @@ class ApplePushService
         curl_setopt($ch, CURLOPT_VERBOSE, true);
 
         $response = curl_exec($ch);
-        $data = json_decode($response);
+
+        if ($response === false) {
+            throw new ApplePushServiceException('Curl error: '.curl_error($ch));
+        }
+
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if ($status !== 200) {
-            throw new ApplePushServiceException($data->reason, $status);
+            $data = json_decode($response);
+
+            if ($data === null) {
+                throw new ApplePushServiceException('Service error: Unknown', $status);
+            }
+
+            throw new ApplePushServiceException('Service error: '.$data->reason, $status);
         }
     }
 }
