@@ -14,7 +14,7 @@
         "laravel/prompts": "^0.1.21",
         "laravel/tinker": "^2.9",
         "pkpass/pkpass": "^2.3",
-        "telepath/laravel": "^0.6.0"
+        "telepath/laravel": "^0.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

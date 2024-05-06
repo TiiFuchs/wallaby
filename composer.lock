@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d3ed478b29b35aea098a7e668fc7fc9",
+    "content-hash": "0fd30dd7a4864166d40763aa13ba380e",
     "packages": [
         {
             "name": "brick/math",
@@ -5904,23 +5904,23 @@
         },
         {
             "name": "telepath/laravel",
-            "version": "v0.6.0",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/telepath-php/laravel.git",
-                "reference": "117cf10bddce756ed26918b3e32b26f2fed25e8f"
+                "reference": "3d421f7303fcf212a21be32cf975df39e3332393"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/telepath-php/laravel/zipball/117cf10bddce756ed26918b3e32b26f2fed25e8f",
-                "reference": "117cf10bddce756ed26918b3e32b26f2fed25e8f",
+                "url": "https://api.github.com/repos/telepath-php/laravel/zipball/3d421f7303fcf212a21be32cf975df39e3332393",
+                "reference": "3d421f7303fcf212a21be32cf975df39e3332393",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "^9.0 | ^10.0 | ^11.0",
                 "php": "^8.2",
                 "symfony/cache": "^6.2",
-                "telepath/telepath": "^0.18"
+                "telepath/telepath": "^0.19"
             },
             "require-dev": {
                 "laravel/framework": "^9.0 | ^10.0 | ^11.0"
@@ -5928,7 +5928,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "0.6.x-dev"
+                    "dev-main": "0.7.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -5957,22 +5957,22 @@
             "description": "Laravel integration of Telepath",
             "support": {
                 "issues": "https://github.com/telepath-php/laravel/issues",
-                "source": "https://github.com/telepath-php/laravel/tree/v0.6.0"
+                "source": "https://github.com/telepath-php/laravel/tree/v0.7.0"
             },
-            "time": "2024-04-02T09:56:11+00:00"
+            "time": "2024-05-06T16:20:11+00:00"
         },
         {
             "name": "telepath/telepath",
-            "version": "v0.18.3",
+            "version": "v0.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/telepath-php/telepath.git",
-                "reference": "b1f05cd7f2c2a7636cc980d7b1bae2906645fe76"
+                "reference": "191ba5812bd997bf056cbe2c7c6cf1e0934e6067"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/telepath-php/telepath/zipball/b1f05cd7f2c2a7636cc980d7b1bae2906645fe76",
-                "reference": "b1f05cd7f2c2a7636cc980d7b1bae2906645fe76",
+                "url": "https://api.github.com/repos/telepath-php/telepath/zipball/191ba5812bd997bf056cbe2c7c6cf1e0934e6067",
+                "reference": "191ba5812bd997bf056cbe2c7c6cf1e0934e6067",
                 "shasum": ""
             },
             "require": {
@@ -6021,9 +6021,9 @@
             "description": "PHP Library for creating Telegram Bots",
             "support": {
                 "issues": "https://github.com/telepath-php/telepath/issues",
-                "source": "https://github.com/telepath-php/telepath/tree/v0.18.3"
+                "source": "https://github.com/telepath-php/telepath/tree/v0.19.0"
             },
-            "time": "2024-05-03T08:55:32+00:00"
+            "time": "2024-05-06T16:17:59+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
