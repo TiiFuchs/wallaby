@@ -12,7 +12,8 @@ use function Laravel\Prompts\text;
 class PushPass extends Command
 {
     protected $signature = 'pass:push {passTypeId? : Pass Type ID of the passes to push}
-                                      {serialNumber? : Serial number of the pass to push}';
+                                      {serialNumber? : Serial number of the pass to push}
+                                      {--f|force : Enforce every pass to be updated}';
 
     protected $description = 'Pushes updated passes to its devices.';
 
@@ -29,7 +30,7 @@ class PushPass extends Command
 
         $serialNumber = $this->argument('serialNumber');
 
-        if (! $serialNumber && ! confirm('You didn\'t specify any serialNumber. Do you wish to push all passes?')) {
+        if (! $serialNumber && ! confirm('You didn\'t specify any serial number. Do you wish to push all passes?')) {
             $serialNumber = text('Which serial number do you wish to push?');
         }
 
@@ -46,7 +47,10 @@ class PushPass extends Command
 
         $this->withProgressBar($passes, function (Pass $pass) {
 
-            $pass->details->touch();
+            if ($this->option('force')) {
+                $pass->details->touch();
+            }
+
             $pass->pushToDevices();
 
         });

@@ -67,12 +67,12 @@ class Pass extends Model
 
     public function getCertificatePath(): string
     {
-        return resource_path("passes/{$this->pass_type_id}/{$this->pass_type_id}.p12");
+        return storage_path("app/certificates/{$this->pass_type_id}.p12");
     }
 
     public function getResourceFiles(): array
     {
-        return glob(resource_path("passes/{$this->pass_type_id}/resources/").'*');
+        return glob(resource_path("passes/{$this->pass_type_id}/").'*');
     }
 
     public function pushToDevices(): void
