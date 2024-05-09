@@ -169,6 +169,16 @@ class CineStarCardService
             $data[$keyMap[$label]] = $value;
         }
 
+        // Get list of cinemas
+        //        $cinemas = [];
+        //        $cinemaSelect = $crawler->filter('#profile_form_cinema');
+        //        foreach ($cinemaSelect->children('option') as $cinemaOption) {
+        //            /** @var \DOMAttr $value */
+        //            $value = $cinemaOption->attributes['value'];
+        //            $cinemas[$value->textContent] = $cinemaOption->textContent;
+        //        }
+        //        $data['cinemas'] = $cinemas;
+
         return $data;
     }
 }
