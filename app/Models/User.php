@@ -49,6 +49,6 @@ class User extends Authenticatable
     {
         $admins = str(config('wallaby.admins'))->explode(',')->map(fn ($item) => trim($item))->filter();
 
-        return in_array($this->email, $admins);
+        return $admins->contains($this->email);
     }
 }
