@@ -19,7 +19,7 @@ class ImportCertificate extends Command
 
         $password = $this->option('password');
         if (! $password) {
-            $password = password('Password for certificate file', required: true);
+            $password = password('Password for certificate file');
         }
 
         $p12File = file_get_contents($path);

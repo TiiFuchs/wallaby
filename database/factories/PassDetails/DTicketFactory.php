@@ -16,7 +16,7 @@ class DTicketFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'valid_in' => $this->faker->dateTimeBetween('-1 year'),
-            'barcode' => Str::random(128),
+            'barcode' => Str::random(720),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

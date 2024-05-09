@@ -2,15 +2,19 @@
 
 namespace App\Services;
 
+use App\Data\CineStarCard\ProfileData;
 use App\Exceptions\CineStarCard\InvalidAuthenticationException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\DomCrawler\Crawler;
 
 class CineStarCardService
 {
     const AUTH_START = 'https://www.cinestar.de/auth/connect?state=/kino-stade/account/willkommen';
+
+    const CACHE_TTL_MINUTES = 60;
 
     protected CookieJar $cookies;
 
@@ -82,14 +86,21 @@ class CineStarCardService
      * @throws GuzzleException
      * @throws InvalidAuthenticationException
      */
-    public function data(): array
+    public function data(): ProfileData
     {
         $this->login();
 
-        return [
-            ...$this->profileData(),
-            ...$this->welcomeData(),
-        ];
+        $data = Cache::remember(
+            'cinestarcard:profile:'.sha1($this->username),
+            now()->addMinutes(self::CACHE_TTL_MINUTES),
+            function () {
+                return [
+                    ...$this->profileData(),
+                    ...$this->welcomeData(),
+                ];
+            });
+
+        return ProfileData::from($data);
     }
 
     /**
