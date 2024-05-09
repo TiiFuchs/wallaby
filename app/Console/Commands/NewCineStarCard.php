@@ -28,7 +28,7 @@ class NewCineStarCard extends Command
         ]);
 
         try {
-            spin(fn () => $cinestarCard->fetchData(), 'Fetching data...');
+            spin(fn () => $cinestarCard->updateData(), 'Fetching data...');
         } catch (InvalidAuthenticationException $e) {
             $cinestarCard->delete();
             $this->error($e->getMessage());

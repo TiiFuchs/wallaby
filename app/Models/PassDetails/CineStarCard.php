@@ -46,7 +46,7 @@ class CineStarCard extends PassDetails
      * @throws InvalidAuthenticationException
      * @throws GuzzleException
      */
-    public function fetchData(): void
+    public function updateData(): void
     {
         $data = \App\Facades\CineStarCard::username($this->username)
             ->password($this->password)
