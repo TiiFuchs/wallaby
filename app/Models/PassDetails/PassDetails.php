@@ -19,6 +19,10 @@ abstract class PassDetails extends Model
                 'pass_type_id' => $details->getPassTypeId(),
             ]);
         });
+
+        static::deleted(function (PassDetails $details) {
+            $details->pass()->delete();
+        });
     }
 
     public function pass(): MorphOne

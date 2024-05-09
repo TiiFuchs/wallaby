@@ -28,12 +28,12 @@ class ConvertCertificate extends Command
 
         $password = $this->option('password');
         if (! $password) {
-            $password = password('Password for certificate', required: true);
+            $password = password('Password for certificate');
         }
 
         $newPassword = $this->option('new-password');
         if (! $newPassword && confirm('Would you like to change the password?')) {
-            $newPassword = password('Specify the new password', required: true);
+            $newPassword = password('Specify the new password');
         } elseif (! $newPassword) {
             $newPassword = $password;
         }
