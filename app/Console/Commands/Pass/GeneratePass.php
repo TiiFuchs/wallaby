@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Pass;
 
 use App\Models\Pass;
 use Illuminate\Console\Command;

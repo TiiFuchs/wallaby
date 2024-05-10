@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Certificates;
 
 use Illuminate\Console\Command;
-
 use function Laravel\Prompts\password;
 
-class ImportCertificate extends Command
+class Import extends Command
 {
     protected $signature = 'cert:import {path : Path to certificate file (.p12)}
                             {--p|password= : Password for certificate file}';

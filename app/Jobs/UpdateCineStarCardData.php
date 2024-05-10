@@ -13,20 +13,16 @@ class UpdateCineStarCardData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct()
+    public function __construct(protected CineStarCard $card)
     {
     }
 
     public function handle(): void
     {
-        foreach (CineStarCard::all() as $card) {
+        $this->card->fetchData();
 
-            $card->updateData();
-
-            if ($card->wasChanged()) {
-                $card->pass->pushToDevices();
-            }
-
+        if ($this->card->wasChanged()) {
+            $this->card->pass->pushToDevices();
         }
     }
 }

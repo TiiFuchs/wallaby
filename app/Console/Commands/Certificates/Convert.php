@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Certificates;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
-
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\password;
 
-class ConvertCertificate extends Command
+class Convert extends Command
 {
     protected $signature = 'cert:convert {path : Path to certificate file (.p12)}
                             {--p|password= : Password for private key}

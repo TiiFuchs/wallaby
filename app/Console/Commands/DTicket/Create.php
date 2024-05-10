@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\DTicket;
 
 use App\Facades\QRTerminal;
 use App\Models\PassDetails\DTicket;
 use Illuminate\Console\Command;
-
 use function Laravel\Prompts\text;
 
-class NewDTicket extends Command
+class Create extends Command
 {
-    protected $signature = 'dticket:new';
+    protected $signature = 'dticket:create';
 
     protected $description = 'Generates a new D-Ticket.';
 

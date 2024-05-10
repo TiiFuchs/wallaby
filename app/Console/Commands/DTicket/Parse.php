@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\DTicket;
 
 use App\Models\Pass;
 use App\Models\PassDetails\DTicket;
 use Illuminate\Console\Command;
 
-class ParseDTicket extends Command
+class Parse extends Command
 {
     protected $signature = 'dticket:parse {serialNumber : Pass to which the barcode should be saved} {file : Path to the screenshot}';
 

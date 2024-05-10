@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Certificates;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Helper\Table;
-
 use function Laravel\Prompts\password;
 
-class CertificateInfo extends Command
+class Info extends Command
 {
     protected $signature = 'cert:info {path : Path to certificate file (.p12)}
                             {--p|password= : Password for certificate file}';
