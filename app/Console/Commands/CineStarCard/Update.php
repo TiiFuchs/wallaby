@@ -37,6 +37,8 @@ class Update extends Command
         progress('Queueing jobs...', $cards, function (CineStarCard $card) {
             UpdateCineStarCardData::dispatch($card);
         });
+
+        return self::SUCCESS;
     }
 
     /**
