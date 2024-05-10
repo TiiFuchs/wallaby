@@ -20,6 +20,10 @@ class DTicket extends PassDetails
         'telegram_user_id',
     ];
 
+    protected $hidden = [
+        'barcode',
+    ];
+
     protected function casts(): array
     {
         return [

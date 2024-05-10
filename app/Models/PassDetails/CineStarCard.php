@@ -2,6 +2,7 @@
 
 namespace App\Models\PassDetails;
 
+use App\Casts\MaybeEncrypted;
 use App\Exceptions\CineStarCard\CinemaCoordinateUpdateException;
 use App\Exceptions\CineStarCard\InvalidAuthenticationException;
 use App\Models\CineStarCard\Cinema;
@@ -24,10 +25,14 @@ class CineStarCard extends PassDetails
         'password',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
     protected function casts(): array
     {
         return [
-            'username' => 'encrypted',
+            'username' => MaybeEncrypted::class,
             'password' => 'encrypted',
         ];
     }
