@@ -1,11 +1,10 @@
 <?php
 
-use App\Jobs\RemindDTicketUpdate;
 use Illuminate\Support\Facades\Schedule;
 
-Schedule::job(new RemindDTicketUpdate())
+Schedule::job(new \App\Jobs\RemindDTicketUpdate())
     ->lastDayOfMonth('20:00');
 
-Schedule::command('cinestarcard:update', [
-    '--all' => true,
+Schedule::command(\App\Console\Commands\CineStarCard\Update::class, [
+    '--all',
 ])->everyThirtyMinutes()->between('11:00', '23:00');
