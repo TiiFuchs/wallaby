@@ -14,7 +14,7 @@ class CineStarCardService
 {
     const AUTH_START = 'https://www.cinestar.de/auth/connect?state=/kino-stade/account/willkommen';
 
-    const CACHE_TTL_MINUTES = 60;
+    const CACHE_TTL_MINUTES = 15;
 
     protected CookieJar $cookies;
 
