@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 class Parse extends Command
 {
-    protected $signature = 'dticket:parse {serialNumber : Pass to which the barcode should be saved} {file : Path to the screenshot}';
+    protected $signature = 'd-ticket:parse {serialNumber : Pass to which the barcode should be saved} {file : Path to the screenshot}';
 
     protected $description = 'Parses a screenshot and saves it to a pass.';
 
