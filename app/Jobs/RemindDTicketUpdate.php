@@ -20,12 +20,23 @@ class RemindDTicketUpdate implements ShouldQueue
 
     public function handle(): void
     {
-        if (! now()->isLastOfMonth()) {
-            return;
+        $comparisonDate = now()->startOfMonth();
+
+        if (now()->isLastOfMonth()) {
+            $comparisonDate = $comparisonDate->addMonth();
         }
 
-        $comparisonDate = now()->startOfMonth()->addMonth();
         $dateString = $comparisonDate->translatedFormat('F Y');
+
+        $textPool = [
+            "Denk dran, mir dein neues Deutschlandticket für <b>{$dateString}</b> zuzusenden, damit ich deinen Wallet Pass aktualisieren kann.",
+            "Vergiss nicht, mir dein neues Deutschlandticket für <b>{$dateString}</b> zuzusenden, damit ich deinen Wallet Pass aktualisieren kann.",
+            "Bitte sende mir dein neues Deutschlandticket für <b>{$dateString}</b>, damit ich deinen Wallet Pass aktualisieren kann.",
+            "Ich benötige dein neues Deutschlandticket für <b>{$dateString}</b>, um deinen Wallet Pass zu aktualisieren.",
+            "Dein neues Deutschlandticket für <b>{$dateString}</b> fehlt mir noch, um deinen Wallet Pass zu aktualisieren.",
+            "Ich warte noch auf dein neues Deutschlandticket für <b>{$dateString}</b>, um deinen Wallet Pass zu aktualisieren.",
+        ];
+        $text = $textPool[array_rand($textPool)];
 
         // Go over every DTicket
         foreach (DTicket::whereNotNull('valid_in')->get() as $ticket) {
@@ -36,7 +47,7 @@ class RemindDTicketUpdate implements ShouldQueue
 
             Telepath::bot()->sendMessage(
                 $ticket->telegram_user_id,
-                "Heute ist der letzte Tag im Monat.\nDenk dran, mir dein neues Deutschlandticket für <b>{$dateString}</b> zuzusenden, damit ich deinen Wallet Pass aktualisieren kann.",
+                $text,
                 parse_mode: 'HTML',
             );
 
