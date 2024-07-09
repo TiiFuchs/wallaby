@@ -14,12 +14,13 @@ use Telepath\Telegram\Update;
 class IncomingImage
 {
     #[MessageType(MessageType::PHOTO)]
+    #[MessageType(MessageType::DOCUMENT)]
     public function incomingImage(Update $update, Bot $bot)
     {
         $sender = $update->message->from;
         $ticket = DTicket::whereTelegramUserId($sender->id)->first();
 
-        if (! $ticket) {
+        if (!$ticket) {
             $bot->sendMessage(
                 $sender->id,
                 'Du hast noch kein Deutschlandticket registriert. Bitte melde dich bei @TiiFuchs.'
@@ -28,10 +29,26 @@ class IncomingImage
             return;
         }
 
-        $photo = $update->message->photo;
-        /** @var PhotoSize $originalPhoto */
-        $originalPhoto = collect($photo)->sortByDesc->file_size->first();
-        $file = $bot->getFile($originalPhoto->file_id);
+        $wasPhoto = false;
+        if ($photo = $update->message->photo) {
+            $wasPhoto = true;
+            /** @var PhotoSize $originalPhoto */
+            $originalPhoto = collect($photo)->sortByDesc->file_size->first();
+            $file = $bot->getFile($originalPhoto->file_id);
+        } elseif ($document = $update->message->document) {
+            $mimeType = explode('/', $document->mime_type)[0] ?? null;
+
+            if ($mimeType !== 'image') {
+                $bot->sendMessage(
+                    chat_id: $sender->id,
+                    text: 'Ich kann nur mit Bilddateien etwas anfangen. Bitte sende mir einen Screenshot als Datei.',
+                );
+
+                return;
+            }
+
+            $file = $bot->getFile($document->file_id);
+        }
 
         $filename = tempnam(storage_path('app/photos'), 'photo_');
         $file->saveTo($filename);
@@ -40,10 +57,16 @@ class IncomingImage
 
         unlink($filename);
 
-        if (! $success) {
-            Telepath::bot()->sendMessage(
+        if (!$success) {
+            $text = '⚠️ Ich habe auf dem Screenshot keinen gültigen Code erkennen können.';
+
+            if ($wasPhoto) {
+                $text .= "\n" . 'Schick mir den Screenshot doch bitte noch einmal als Datei.';
+            }
+
+            $bot->sendMessage(
                 chat_id: $sender->id,
-                text: '⚠️ Ich habe auf dem Foto keinen gültigen Code erkennen können.'
+                text: $text,
             );
 
             return;
@@ -52,7 +75,7 @@ class IncomingImage
         $ticket->pass->pushToDevices();
 
         if ($ticket->pass->devices()->count() === 0) {
-            Telepath::bot()->sendMessage(
+            $bot->sendMessage(
                 chat_id: $sender->id,
                 text: 'Dein Deutschlandticket wurde erstellt.',
                 reply_markup: InlineKeyboardMarkup::make([[
@@ -66,7 +89,7 @@ class IncomingImage
             return;
         }
 
-        Telepath::bot()->sendMessage(
+        $bot->sendMessage(
             chat_id: $sender->id,
             text: 'Dein Deutschlandticket wurde aktualisiert.'
         );
