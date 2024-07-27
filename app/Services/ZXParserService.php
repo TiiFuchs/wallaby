@@ -21,7 +21,9 @@ class ZXParserService
         $jCommanderPath = base_path('bin/zebra-crossing/jcommander-1.83.jar');
 
         // Run java command
-        $result = Process::run([
+        $result = Process::env([
+            'LC_ALL' => 'de_DE.UTF-8',
+        ])->run([
             $javaPath,
             '-cp', "$javaSEPath:$corePath:$jCommanderPath",
             'com.google.zxing.client.j2se.CommandLineRunner',
@@ -35,8 +37,8 @@ class ZXParserService
         }
 
         // Parse raw result
-        $raw = substr($output, strpos($output, "Raw result:\n") + 12);
-        $raw = substr($raw, 0, strpos($raw, "\nParsed result:"));
+        $raw = mb_substr($output, mb_strpos($output, "Raw result:\n") + 12);
+        $raw = mb_substr($raw, 0, mb_strpos($raw, "\nParsed result:"));
 
         return $raw;
     }
