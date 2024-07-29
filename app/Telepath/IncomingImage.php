@@ -3,9 +3,9 @@
 namespace App\Telepath;
 
 use App\Models\PassDetails\DTicket;
+use Illuminate\Support\Facades\Log;
 use Telepath\Bot;
 use Telepath\Handlers\Message\MessageType;
-use Telepath\Laravel\Facades\Telepath;
 use Telepath\Telegram\InlineKeyboardButton;
 use Telepath\Telegram\InlineKeyboardMarkup;
 use Telepath\Telegram\PhotoSize;
@@ -20,7 +20,7 @@ class IncomingImage
         $sender = $update->message->from;
         $ticket = DTicket::whereTelegramUserId($sender->id)->first();
 
-        if (!$ticket) {
+        if (! $ticket) {
             $bot->sendMessage(
                 $sender->id,
                 'Du hast noch kein Deutschlandticket registriert. Bitte melde dich bei @TiiFuchs.'
@@ -39,6 +39,8 @@ class IncomingImage
             $mimeType = explode('/', $document->mime_type)[0] ?? null;
 
             if ($mimeType !== 'image') {
+                Log::warning('mimetype for incoming document: '.var_export($document->mime_type, true));
+
                 $bot->sendMessage(
                     chat_id: $sender->id,
                     text: 'Ich kann nur mit Bilddateien etwas anfangen. Bitte sende mir einen Screenshot als Datei.',
@@ -57,11 +59,11 @@ class IncomingImage
 
         unlink($filename);
 
-        if (!$success) {
+        if (! $success) {
             $text = '⚠️ Ich habe auf dem Screenshot keinen gültigen Code erkennen können.';
 
             if ($wasPhoto) {
-                $text .= "\n" . 'Schick mir den Screenshot doch bitte noch einmal als Datei.';
+                $text .= "\n".'Schick mir den Screenshot doch bitte noch einmal als Datei.';
             }
 
             $bot->sendMessage(
