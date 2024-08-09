@@ -63,7 +63,7 @@ class IncomingImage
             $text = '⚠️ Ich habe auf dem Screenshot keinen gültigen Code erkennen können.';
 
             if ($wasPhoto) {
-                $text .= "\n".'Schick mir den Screenshot doch bitte noch einmal als Datei.';
+                $text .= "\n".'Vielleicht klappt es, wenn du mir den Screenshot als Datei sendest.';
             }
 
             $bot->sendMessage(
