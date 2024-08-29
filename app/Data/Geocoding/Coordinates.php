@@ -9,6 +9,5 @@ class Coordinates extends Data
     public function __construct(
         public float $latitude,
         public float $longitude,
-    ) {
-    }
+    ) {}
 }

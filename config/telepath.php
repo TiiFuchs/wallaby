@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'bots'    => [
+    'bots' => [
 
         'main' => [
             'api_token' => env('TELEGRAM_API_TOKEN', ''),
@@ -90,7 +90,7 @@ return [
         |
         */
 
-        'resolver'   => \Telepath\Laravel\WebhookResolver\HashWebhookResolver::class,
+        'resolver' => \Telepath\Laravel\WebhookResolver\HashWebhookResolver::class,
 
     ],
 

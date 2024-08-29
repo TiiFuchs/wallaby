@@ -6,6 +6,7 @@ use App\Exceptions\CineStarCard\InvalidAuthenticationException;
 use App\Facades\QRTerminal;
 use App\Models\PassDetails\CineStarCard;
 use Illuminate\Console\Command;
+
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\spin;
 use function Laravel\Prompts\text;

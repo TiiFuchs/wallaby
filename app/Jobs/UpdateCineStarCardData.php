@@ -13,9 +13,7 @@ class UpdateCineStarCardData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(protected CineStarCard $card)
-    {
-    }
+    public function __construct(protected CineStarCard $card) {}
 
     public function handle(): void
     {

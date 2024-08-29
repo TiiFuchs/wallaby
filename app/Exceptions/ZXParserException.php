@@ -4,6 +4,4 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ZXParserException extends Exception
-{
-}
+class ZXParserException extends Exception {}

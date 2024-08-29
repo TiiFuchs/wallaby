@@ -40,6 +40,7 @@ class ZXParserService
         $raw = mb_substr($output, mb_strpos($output, "Raw result:\n") + 12);
         $raw = mb_substr($raw, 0, mb_strpos($raw, "\nParsed result:"));
 
-        return $raw;
+        // Convert back to iso-8859-1
+        return mb_convert_encoding($raw, 'latin1', 'utf-8');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Console\Commands\Certificates;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Helper\Table;
+
 use function Laravel\Prompts\password;
 
 class Info extends Command

@@ -4,6 +4,7 @@ namespace App\Console\Commands\Certificates;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\password;
 

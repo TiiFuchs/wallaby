@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Certificates;
 
 use Illuminate\Console\Command;
+
 use function Laravel\Prompts\password;
 
 class Import extends Command

@@ -9,6 +9,5 @@ class Address extends Data
     public function __construct(
         public string $address,
         public Coordinates $coordinates,
-    ) {
-    }
+    ) {}
 }

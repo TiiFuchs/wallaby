@@ -10,6 +10,8 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\DomCrawler\Crawler;
 
+use function App\parse_float;
+
 class CineStarCardService
 {
     const AUTH_START = 'https://www.cinestar.de/auth/connect?state=/kino-stade/account/willkommen';
@@ -26,7 +28,7 @@ class CineStarCardService
 
     public function __construct()
     {
-        $this->cookies = new CookieJar();
+        $this->cookies = new CookieJar;
         $this->client = new Client([
             'cookies' => $this->cookies,
             'headers' => [
@@ -131,7 +133,7 @@ class CineStarCardService
             $value = $row->childNodes->item(1)->firstChild->textContent;
 
             if ($keyMap[$label] === 'premium_points') {
-                $value = parseFloat($value);
+                $value = parse_float($value);
             }
 
             $data[$keyMap[$label]] = $value;

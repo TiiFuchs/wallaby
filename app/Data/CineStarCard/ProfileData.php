@@ -20,6 +20,5 @@ class ProfileData extends Data
         public string $regularCinema,
         public string $dateOfBirth,
         public float $premiumPoints,
-    ) {
-    }
+    ) {}
 }
