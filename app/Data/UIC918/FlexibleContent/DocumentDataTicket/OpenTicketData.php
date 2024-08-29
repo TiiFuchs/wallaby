@@ -18,6 +18,18 @@ class OpenTicketData extends DocumentDataTicket
 
     public string $stationCodeTable;
 
+    public ?int $fromStationNum;
+
+    public ?int $toStationNum;
+
+    #[MapInputName('fromStationNameUTF8')]
+    public ?string $fromStationName;
+
+    #[MapInputName('toStationNameUTF8')]
+    public ?string $toStationName;
+
+    public ?string $validRegionDesc;
+
     public int $validFromDay;
 
     public int $validFromTime;
@@ -33,8 +45,8 @@ class OpenTicketData extends DocumentDataTicket
     /** @var array<int, TariffType> */
     public array $tariffs;
 
-    public int $price;
+    public ?int $price;
 
     /** @var array<int, IncludedOpenTicketType> */
-    public array $includedAddOns;
+    public ?array $includedAddOns;
 }

@@ -11,17 +11,38 @@ class TravelerType extends Data
 
     public string $lastName;
 
-    public int $yearOfBirth;
+    public ?int $yearOfBirth;
 
-    public int $monthOfBirth;
+    /** @var int|null Only in version 1.3 */
+    public ?int $dayOfBirth;
 
-    public int $dayOfBirthInMonth;
+    /** @var int|null Only in version 3.0 */
+    public ?int $monthOfBirth;
+
+    /** @var int|null Only in version 3.0 */
+    public ?int $dayOfBirthInMonth;
 
     public bool $ticketHolder;
 
-    public function birthday(): Carbon
+    public function birthday(): ?Carbon
     {
-        return Carbon::createFromDate($this->yearOfBirth, $this->monthOfBirth, $this->dayOfBirthInMonth)
-            ->setTime(0, 0);
+        if (! is_null($this->yearOfBirth) && ! is_null($this->monthOfBirth) && ! is_null($this->dayOfBirthInMonth)) {
+
+            // Version 3.0
+            return Carbon::createFromDate($this->yearOfBirth, $this->monthOfBirth, $this->dayOfBirthInMonth)
+                ->setTime(0, 0);
+
+        } elseif (! is_null($this->yearOfBirth) && ! is_null($this->dayOfBirth)) {
+
+            // Version 1.3
+            return Carbon::createFromDate($this->yearOfBirth, 1, 1)
+                ->setTime(0, 0)
+                ->addDays($this->dayOfBirth - 1);
+
+        } else {
+
+            return null;
+
+        }
     }
 }
