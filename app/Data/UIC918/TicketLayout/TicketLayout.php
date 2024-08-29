@@ -22,4 +22,28 @@ class TicketLayout extends Record
         $this->fields[] = $field;
         $this->numberOfFields++;
     }
+
+    public function render(): string
+    {
+        $lines = [];
+
+        foreach ($this->fields as $field) {
+            $row = $field->line;
+            $column = $field->column;
+            $length = strlen($field->text);
+
+            // Make sure we have text
+            $lines[$row] = $lines[$row] ?? str_pad('', 72);
+
+            $lines[$row] = substr($lines[$row], 0, $column).$field->text.substr($lines[$row], $column + $length);
+        }
+
+        $text = '';
+        $max = max(array_keys($lines));
+        for ($i = 0; $i <= $max; $i++) {
+            $text .= ($lines[$i] ?? '')."\n";
+        }
+
+        return $text;
+    }
 }
