@@ -40,12 +40,11 @@ class TicketParser extends Parser
             // $length contains $type, $version and $length itself
             $data = $message->next((int) $length - 12);
 
-            // TODO: Call corresponding parser
             match ($type) {
                 'U_HEAD' => $ticket->mainRecord = (new MainRecordParser($version))->parse($data),
                 'U_TLAY' => $ticket->ticketLayout = (new TicketLayoutParser($version))->parse($data),
                 'U_FLEX' => $ticket->flexibleContent = (new FlexibleContentParser($version))->parse($data),
-                '0080VU' => true,
+                '0080VU' => $ticket->vuRecord = (new VURecordParser($version))->parse($data),
                 default => false,
             };
 

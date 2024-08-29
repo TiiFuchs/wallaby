@@ -4,6 +4,7 @@ namespace App\Data\UIC918;
 
 use App\Data\UIC918\FlexibleContent\FlexibleContent;
 use App\Data\UIC918\TicketLayout\TicketLayout;
+use App\Data\UIC918\VURecord\VURecord;
 use App\Exceptions\UIC918\InvalidDataException;
 use Spatie\LaravelData\Attributes\MapInputName;
 
@@ -29,6 +30,8 @@ class Ticket extends Record
     public ?TicketLayout $ticketLayout = null;
 
     public ?FlexibleContent $flexibleContent = null;
+
+    public ?VURecord $vuRecord = null;
 
     public function isValid(): bool
     {

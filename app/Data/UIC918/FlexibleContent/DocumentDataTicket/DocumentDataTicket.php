@@ -11,6 +11,7 @@ abstract class DocumentDataTicket extends Data
     {
         return match ($value[0]) {
             'openTicket' => OpenTicketData::from($value[1]),
+            'customerCard' => CustomerCardData::from($value[1]),
             default => throw new InvalidDataException("Could not identify DocumentDataTicket type: {$value[0]}"),
         };
     }
