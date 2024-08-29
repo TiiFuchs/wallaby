@@ -10,12 +10,6 @@ use Illuminate\Support\Facades\Process;
 
 class FlexibleContentParser extends Parser
 {
-    public function __construct(
-        protected string $version,
-    ) {
-        //
-    }
-
     /**
      * @throws ParserException
      * @throws InvalidDataException

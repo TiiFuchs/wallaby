@@ -4,14 +4,20 @@ namespace App\Services\UIC918\Parser;
 
 use App\Data\UIC918\Ticket;
 use App\Exceptions\UIC918\InvalidDataException;
+use App\Exceptions\UIC918\ParserException;
 use App\Utils\ByteReader;
 
 use function App\asn1_das_signature;
 
 class TicketParser extends Parser
 {
+    public function __construct()
+    {
+        parent::__construct('');
+    }
+
     /**
-     * @throws InvalidDataException
+     * @throws InvalidDataException|ParserException
      */
     public function parse(string $rawData): Ticket
     {
@@ -37,7 +43,7 @@ class TicketParser extends Parser
             // TODO: Call corresponding parser
             match ($type) {
                 'U_HEAD' => $ticket->mainRecord = (new MainRecordParser($version))->parse($data),
-                'U_TLAY' => true,
+                'U_TLAY' => $ticket->ticketLayout = (new TicketLayoutParser($version))->parse($data),
                 'U_FLEX' => $ticket->flexibleContent = (new FlexibleContentParser($version))->parse($data),
                 '0080VU' => true,
                 default => false,
@@ -61,7 +67,7 @@ class TicketParser extends Parser
      *
      * @throws InvalidDataException
      */
-    protected function parseContainer(ByteReader $data)
+    protected function parseContainer(ByteReader $data): array
     {
         $messageTypeId = $data->next(3); // #UT
 

@@ -3,6 +3,7 @@
 namespace App\Data\UIC918;
 
 use App\Data\UIC918\FlexibleContent\FlexibleContent;
+use App\Data\UIC918\TicketLayout\TicketLayout;
 use App\Exceptions\UIC918\InvalidDataException;
 use Spatie\LaravelData\Attributes\MapInputName;
 
