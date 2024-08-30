@@ -3,6 +3,7 @@
 namespace App\Data\Uic918\VURecord;
 
 use App\Data\Uic918\Record;
+use Illuminate\Support\Collection;
 
 class VURecord extends Record
 {
@@ -12,6 +13,6 @@ class VURecord extends Record
 
     public int $anzahlPersonen;
 
-    /** @var array<int, Efs> */
-    public array $efsListe;
+    /** @var Collection<int, Efs> */
+    public Collection $efsListe;
 }

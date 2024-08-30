@@ -17,7 +17,7 @@ class FlexibleContentParser extends Parser
     public function parse(string $rawData): FlexibleContent
     {
         $pythonExec = base_path('uic-asn1-parser/.venv/bin/python');
-        if (!is_file($pythonExec)) {
+        if (! is_file($pythonExec)) {
             $this->setupPythonEnvironment();
         }
 
@@ -37,7 +37,10 @@ class FlexibleContentParser extends Parser
 
         //        ray($data)->green();
 
-        return FlexibleContent::from($data);
+        $flex = FlexibleContent::from($data);
+        $flex->version = $this->version;
+
+        return $flex;
     }
 
     protected function setupPythonEnvironment(): void

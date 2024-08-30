@@ -3,6 +3,7 @@
 namespace App\Data\Uic918\FlexibleContent\DocumentDataTicket;
 
 use App\Data\Uic918\FlexibleContent\TravelerType;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\MapInputName;
 
 class CustomerCardData extends DocumentDataTicket
@@ -24,8 +25,8 @@ class CustomerCardData extends DocumentDataTicket
 
     public string $cardTypeDescr;
 
-    /** @var array<int, int> */
-    public array $includedServices;
+    /** @var Collection<int, int> */
+    public Collection $includedServices;
 
     public ExtensionData $extension;
 }

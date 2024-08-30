@@ -2,7 +2,7 @@
 
 namespace App\Data\Uic918\FlexibleContent;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 
 class IssuingData extends Data
@@ -31,14 +31,12 @@ class IssuingData extends Data
 
     public string $issuerPNR;
 
-    public function issuingDate(): Carbon
+    public function issuingDate(): CarbonImmutable
     {
-        $date = Carbon::createFromDate($this->issuingYear, 1, 1)
-            ->setTime(0, 0);
-
-        $date->addDays($this->issuingDay - 1);
-        $date->addMinutes($this->issuingTime);
-
-        return $date;
+        return CarbonImmutable::createFromDate($this->issuingYear, 1, 1)
+            ->setTimezone('UTC')
+            ->setTime(0, 0)
+            ->addDays($this->issuingDay - 1)
+            ->addMinutes($this->issuingTime);
     }
 }

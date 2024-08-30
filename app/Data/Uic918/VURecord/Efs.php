@@ -3,6 +3,7 @@
 namespace App\Data\Uic918\VURecord;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 
 class Efs extends Data
@@ -23,6 +24,6 @@ class Efs extends Data
 
     public int $sequenzNr;
 
-    /** @var array<int, ValidityArea> */
-    public array $validAreas = [];
+    /** @var Collection<int, ValidityArea> */
+    public Collection $validAreas = [];
 }

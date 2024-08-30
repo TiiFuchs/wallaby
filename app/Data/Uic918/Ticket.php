@@ -2,10 +2,12 @@
 
 namespace App\Data\Uic918;
 
+use App\Data\Uic918\FlexibleContent\DocumentDataTicket\OpenTicketData;
 use App\Data\Uic918\FlexibleContent\FlexibleContent;
 use App\Data\Uic918\TicketLayout\TicketLayout;
 use App\Data\Uic918\VURecord\VURecord;
 use App\Exceptions\Uic918\InvalidDataException;
+use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Attributes\MapInputName;
 
 class Ticket extends Record
@@ -49,5 +51,44 @@ class Ticket extends Record
         $verify = openssl_verify($this->rawMessage, $this->signature, $certificate, $algorithm);
 
         return $verify === 1;
+    }
+
+    public function tariffDesc(): ?string
+    {
+        $openTicketData = $this->flexibleContent?->transportDocument->first()->ticket;
+        $tariff = $openTicketData instanceof OpenTicketData ? $openTicketData->tariffs->first() : null;
+
+        return $tariff?->tariffDesc ?? $this->ticketLayout->tariffDesc();
+    }
+
+    public function name(): string
+    {
+        $traveler = $this->flexibleContent?->travelerDetail->traveler->first();
+
+        return $traveler ? "{$traveler->firstName} {$traveler->lastName}" : $this->ticketLayout->name();
+    }
+
+    public function class(): int
+    {
+        $openTicketData = $this->flexibleContent?->transportDocument->first()->ticket;
+        $classCode = $openTicketData instanceof OpenTicketData ? $openTicketData->classCode : null;
+
+        $class = match ($classCode) {
+            'first' => 1,
+            'second' => 2,
+            default => null,
+        };
+
+        return $class ?? $this->ticketLayout->class();
+    }
+
+    public function validFrom(): CarbonImmutable
+    {
+        return $this->ticketLayout->validFrom();
+    }
+
+    public function validUntil(): CarbonImmutable
+    {
+        return $this->ticketLayout->validUntil();
     }
 }

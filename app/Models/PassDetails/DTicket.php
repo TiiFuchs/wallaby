@@ -3,8 +3,10 @@
 namespace App\Models\PassDetails;
 
 use App\Casts\Base64Cast;
+use App\Data\Uic918\Ticket;
 use App\Exceptions\ZXParserException;
 use App\Facades\ZXParser;
+use App\Services\Uic918Parser\TicketParser;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -41,6 +43,11 @@ class DTicket extends PassDetails
     public function barcodeUtf8(): Attribute
     {
         return Attribute::get(fn () => mb_convert_encoding($this->barcode, 'utf8', 'latin1'));
+    }
+
+    public function parseTicket(): Ticket
+    {
+        return (new TicketParser)->parse($this->barcode);
     }
 
     public function parseScreenshot(string $filename): bool

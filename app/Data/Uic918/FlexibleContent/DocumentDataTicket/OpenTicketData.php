@@ -2,6 +2,8 @@
 
 namespace App\Data\Uic918\FlexibleContent\DocumentDataTicket;
 
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\MapInputName;
 
 class OpenTicketData extends DocumentDataTicket
@@ -42,11 +44,27 @@ class OpenTicketData extends DocumentDataTicket
 
     public string $classCode;
 
-    /** @var array<int, TariffType> */
-    public array $tariffs;
+    /** @var Collection<int, TariffType> */
+    public Collection $tariffs;
 
     public ?int $price;
 
-    /** @var array<int, IncludedOpenTicketType> */
-    public ?array $includedAddOns;
+    /** @var Collection<int, IncludedOpenTicketType> */
+    public ?Collection $includedAddOns;
+
+    public function validFrom(CarbonImmutable $issuingDate): CarbonImmutable
+    {
+        return $issuingDate->utcOffset($this->validFromUTCOffset * -15)
+            ->setTime(0, 0)
+            ->addDays($this->validFromDay)
+            ->addMinutes($this->validFromTime ?? 0);
+    }
+
+    public function validUntil(CarbonImmutable $issuingDate): CarbonImmutable
+    {
+        return $issuingDate->utcOffset($this->validFromUTCOffset * -15)
+            ->setTime(0, 0)
+            ->addDays($this->validUntilDay)
+            ->addMinutes($this->validUntilTime ?? 0);
+    }
 }

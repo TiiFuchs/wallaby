@@ -24,7 +24,7 @@ class TravelerType extends Data
 
     public bool $ticketHolder;
 
-    public function birthday(): ?Carbon
+    public function birthDate(): ?Carbon
     {
         if (! is_null($this->yearOfBirth) && ! is_null($this->monthOfBirth) && ! is_null($this->dayOfBirthInMonth)) {
 
