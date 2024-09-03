@@ -47,7 +47,7 @@ class FlexibleContentParser extends Parser
     {
         $commands = [
             [ // Setup virtual environment
-                'python',
+                config('paths.python_bin'),
                 '-m',
                 'venv',
                 base_path('uic-asn1-parser/.venv'),
