@@ -89,7 +89,7 @@ class UpdateDTicket implements ShouldQueue
         // Remove screenshot
         unlink($this->filename);
 
-        if ($this->dTicket->pass()->devices()->count() === 0) {
+        if ($this->dTicket->pass->devices()->count() === 0) {
             $this->bot->sendMessage(
                 chat_id: $this->message['chat_id'],
                 text: "🎫 Dein Deutschlandticket Wallet Pass wurde erstellt.\nBitte öffne den Link in Safari.",
