@@ -28,6 +28,7 @@ class ZXParserService
             '-cp', "$javaSEPath:$corePath:$jCommanderPath",
             'com.google.zxing.client.j2se.CommandLineRunner',
             $imagePath,
+            '--try_harder',
             '--possible_formats', 'AZTEC',
         ]);
         $output = $result->output();
