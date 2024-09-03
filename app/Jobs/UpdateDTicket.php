@@ -23,18 +23,18 @@ class UpdateDTicket implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected readonly Bot $bot;
-
     public function __construct(
         protected readonly DTicket $dTicket,
         protected readonly string $filename,
         protected readonly Message $message,
-    ) {
-        $this->bot = resolve(Bot::class);
-    }
+    ) {}
 
-    public function handle(): void
+    protected Bot $bot;
+
+    public function handle(Bot $bot): void
     {
+        $this->bot = $bot;
+
         $this->typing();
 
         // Parse screenshot
