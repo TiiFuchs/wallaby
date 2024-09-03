@@ -62,6 +62,10 @@ class IncomingImage
             reaction: [ReactionTypeEmoji::make('👀')]
         );
 
-        dispatch(new UpdateDTicket($ticket, $filename, $update->message));
+        $message = [
+            'chat_id' => $update->message->from->id,
+            'message_id' => $update->message->message_id,
+        ];
+        dispatch(new UpdateDTicket($ticket, $filename, $message));
     }
 }
