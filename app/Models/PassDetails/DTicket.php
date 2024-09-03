@@ -50,6 +50,9 @@ class DTicket extends PassDetails
         return (new TicketParser)->parse($this->barcode);
     }
 
+    /**
+     * @deprecated
+     */
     public function parseScreenshot(string $filename): bool
     {
         try {

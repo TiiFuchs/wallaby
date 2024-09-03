@@ -36,6 +36,8 @@ class RemindDTicketUpdate implements ShouldQueue
         ];
         $text = $textPool[array_rand($textPool)];
 
+        $disableNotification = now()->hour < 8;
+
         // Go over every DTicket
         foreach (DTicket::whereNotNull('valid_in')->get() as $ticket) {
 
@@ -47,6 +49,7 @@ class RemindDTicketUpdate implements ShouldQueue
                 $ticket->telegram_user_id,
                 $text,
                 parse_mode: 'HTML',
+                disable_notification: $disableNotification,
             );
 
         }

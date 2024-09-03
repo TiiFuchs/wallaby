@@ -19,7 +19,7 @@ class GetPass
         if (! $ticket) {
             $bot->sendMessage(
                 chat_id: $update->message->from->id,
-                text: 'Du hast noch kein Deutschlandticket registriert. Bitte melde dich bei @TiiFuchs.'
+                text: '🚫 Du bist nicht für diesen Service freigeschaltet. Bitte melde dich bei @TiiFuchs.'
             );
 
             return;
@@ -27,7 +27,7 @@ class GetPass
 
         $bot->sendMessage(
             chat_id: $update->message->from->id,
-            text: "Hier ist der Link für dein Deutschland-Ticket.\nDieser Link ist 60 Minuten gültig.",
+            text: "Hier ist dein Deutschlandticket Wallet Pass.\nBitte öffne den Link in Safari.",
             reply_markup: InlineKeyboardMarkup::make([[
                 InlineKeyboardButton::make(
                     text: 'Zu Wallet hinzufügen',

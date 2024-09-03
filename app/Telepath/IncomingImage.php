@@ -2,13 +2,13 @@
 
 namespace App\Telepath;
 
+use App\Jobs\UpdateDTicket;
 use App\Models\PassDetails\DTicket;
 use Illuminate\Support\Facades\Log;
 use Telepath\Bot;
 use Telepath\Handlers\Message\MessageType;
-use Telepath\Telegram\InlineKeyboardButton;
-use Telepath\Telegram\InlineKeyboardMarkup;
 use Telepath\Telegram\PhotoSize;
+use Telepath\Telegram\ReactionTypeEmoji;
 use Telepath\Telegram\Update;
 
 class IncomingImage
@@ -18,12 +18,13 @@ class IncomingImage
     public function incomingImage(Update $update, Bot $bot)
     {
         $sender = $update->message->from;
+        /** @var DTicket $ticket */
         $ticket = DTicket::whereTelegramUserId($sender->id)->first();
 
         if (! $ticket) {
             $bot->sendMessage(
                 $sender->id,
-                'Du hast noch kein Deutschlandticket registriert. Bitte melde dich bei @TiiFuchs.'
+                '🚫 Du bist nicht für diesen Service freigeschaltet. Bitte melde dich bei @TiiFuchs.'
             );
 
             return;
@@ -55,45 +56,12 @@ class IncomingImage
         $filename = tempnam(storage_path('app/photos'), 'photo_');
         $file->saveTo($filename);
 
-        $success = $ticket->parseScreenshot($filename);
-
-        unlink($filename);
-
-        if (! $success) {
-            $text = '⚠️ Ich habe auf dem Screenshot keinen gültigen Code erkennen können.';
-
-            if ($wasPhoto) {
-                $text .= "\n".'Vielleicht klappt es, wenn du mir den Screenshot als Datei sendest.';
-            }
-
-            $bot->sendMessage(
-                chat_id: $sender->id,
-                text: $text,
-            );
-
-            return;
-        }
-
-        $ticket->pass->pushToDevices();
-
-        if ($ticket->pass->devices()->count() === 0) {
-            $bot->sendMessage(
-                chat_id: $sender->id,
-                text: 'Dein Deutschlandticket wurde erstellt.',
-                reply_markup: InlineKeyboardMarkup::make([[
-                    InlineKeyboardButton::make(
-                        'Zu Wallet hinzufügen',
-                        url: $ticket->pass->downloadLink(),
-                    ),
-                ]])
-            );
-
-            return;
-        }
-
-        $bot->sendMessage(
+        $bot->setMessageReaction(
             chat_id: $sender->id,
-            text: 'Dein Deutschlandticket wurde aktualisiert.'
+            message_id: $update->message->message_id,
+            reaction: [ReactionTypeEmoji::make('👀')]
         );
+
+        dispatch(new UpdateDTicket($ticket, $filename, $update->message));
     }
 }
