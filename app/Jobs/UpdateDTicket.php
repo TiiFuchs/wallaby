@@ -15,6 +15,7 @@ use Illuminate\Queue\SerializesModels;
 use Telepath\Bot;
 use Telepath\Telegram\InlineKeyboardButton;
 use Telepath\Telegram\InlineKeyboardMarkup;
+use Telepath\Telegram\Message;
 use Telepath\Telegram\ReactionTypeEmoji;
 use Telepath\Types\Enums\ChatActionType;
 
@@ -27,10 +28,7 @@ class UpdateDTicket implements ShouldQueue
     public function __construct(
         protected readonly DTicket $dTicket,
         protected readonly string $filename,
-        /**
-         * @var array{chat_id: int, message_id: int}
-         */
-        protected readonly array $message,
+        protected readonly Message $message,
     ) {
         $this->bot = resolve(Bot::class);
     }
@@ -91,7 +89,7 @@ class UpdateDTicket implements ShouldQueue
 
         if ($this->dTicket->pass()->devices()->count() === 0) {
             $this->bot->sendMessage(
-                chat_id: $this->message['chat_id'],
+                chat_id: $this->message->from->id,
                 text: "🎫 Dein Deutschlandticket Wallet Pass wurde erstellt.\nBitte öffne den Link in Safari.",
                 reply_markup: InlineKeyboardMarkup::make([[
                     InlineKeyboardButton::make(
@@ -135,7 +133,7 @@ class UpdateDTicket implements ShouldQueue
     protected function typing()
     {
         $this->bot->sendChatAction(
-            chat_id: $this->message['chat_id'],
+            chat_id: $this->message->from->id,
             action: ChatActionType::Typing,
         );
     }
@@ -146,7 +144,7 @@ class UpdateDTicket implements ShouldQueue
     public function respond(string $text): void
     {
         $this->bot->sendMessage(
-            chat_id: $this->message['chat_id'],
+            chat_id: $this->message->from->id,
             text: $text,
         );
     }
@@ -154,8 +152,8 @@ class UpdateDTicket implements ShouldQueue
     protected function setReactionError()
     {
         $this->bot->setMessageReaction(
-            chat_id: $this->message['chat_id'],
-            message_id: $this->message['message_id'],
+            chat_id: $this->message->from->id,
+            message_id: $this->message->message_id,
             reaction: [ReactionTypeEmoji::make('⚡')]
         );
     }
@@ -163,8 +161,8 @@ class UpdateDTicket implements ShouldQueue
     protected function setReactionBad()
     {
         $this->bot->setMessageReaction(
-            chat_id: $this->message['chat_id'],
-            message_id: $this->message['message_id'],
+            chat_id: $this->message->from->id,
+            message_id: $this->message->message_id,
             reaction: [ReactionTypeEmoji::make('👎')]
         );
     }
@@ -172,8 +170,8 @@ class UpdateDTicket implements ShouldQueue
     protected function setReactionGood()
     {
         $this->bot->setMessageReaction(
-            chat_id: $this->message['chat_id'],
-            message_id: $this->message['message_id'],
+            chat_id: $this->message->from->id,
+            message_id: $this->message->message_id,
             reaction: [ReactionTypeEmoji::make('👍')]
         );
     }
