@@ -20,6 +20,7 @@
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",
         "pkpass/pkpass": "^2.3",
+        "sentry/sentry-laravel": "^4.9",
         "spatie/laravel-data": "^4.6",
         "spatie/laravel-ignition": "^2.7",
         "symfony/css-selector": "^7.0",
