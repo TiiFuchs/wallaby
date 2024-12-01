@@ -76,7 +76,14 @@ class TicketLayout extends Record
         $dateText = $this->getAreaText(6, 6, 1, 62);
         preg_match_all('/\d{2}\.\d{2} \d{2}:\d{2}/', $dateText, $matches);
 
-        return CarbonImmutable::createFromFormat('d.m H:i', $matches[0][1]);
+        $validFrom = CarbonImmutable::createFromFormat('d.m H:i', $matches[0][0]);
+        $validUntil = CarbonImmutable::createFromFormat('d.m H:i', $matches[0][1]);
+
+        if ($validUntil->isBefore($validFrom)) {
+            $validUntil = $validUntil->addYear();
+        }
+
+        return $validUntil;
     }
 
     public function render(): string
