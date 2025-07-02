@@ -17,6 +17,7 @@ class CineStarCard extends PassDetails
     protected $table = 'passes_cinestarcard';
 
     protected $fillable = [
+        // 'name',
         'customer_number',
         'premium_points',
         'regular_cinema_id',
@@ -79,12 +80,12 @@ class CineStarCard extends PassDetails
     public function getJsonData(): array
     {
         return [
-            'description' => 'CineStarCard',
+            'description' => 'CineStar Card',
             'organizationName' => 'CineStar',
 
-            'labelColor' => '#eed100',
-            'foregroundColor' => '#eeefef',
-            'backgroundColor' => '#0b0b0b',
+            'foregroundColor' => 'rgb(255, 255, 255)',
+            'backgroundColor' => 'rgb(27, 32, 41)',
+            'labelColor' => 'rgb(255, 255, 255)',
 
             'storeCard' => [
                 'headerFields' => [
@@ -98,7 +99,11 @@ class CineStarCard extends PassDetails
                 ],
 
                 'auxiliaryFields' => [
-                    //
+                    // [
+                    //     'key' => 'name',
+                    //     'label' => 'NAME',
+                    //     'value' => $this->name,
+                    // ],
                 ],
 
                 'backFields' => [
@@ -120,9 +125,9 @@ class CineStarCard extends PassDetails
 
             'barcodes' => [
                 [
-                    'altText' => $this->customer_number,
-                    'format' => 'PKBarcodeFormatQR',
+                    'format' => 'PKBarcodeFormatPDF417',
                     'message' => $this->customer_number,
+                    'altText' => $this->customer_number,
                     'messageEncoding' => 'iso-8859-1',
                 ],
             ],
