@@ -17,12 +17,13 @@ class CineStarCard extends PassDetails
     protected $table = 'passes_cinestarcard';
 
     protected $fillable = [
-        // 'name',
         'customer_number',
         'premium_points',
         'regular_cinema_id',
         'username',
         'password',
+        'first_name',
+        'last_name',
     ];
 
     protected $hidden = [
@@ -58,6 +59,8 @@ class CineStarCard extends PassDetails
 
         $this->customer_number = $data->customerNumber;
         $this->premium_points = $data->premiumPoints;
+        $this->first_name = $data->firstName;
+        $this->last_name = $data->lastName;
 
         // Check for cinema data
         if (! $this->regularCinema) {
@@ -82,6 +85,7 @@ class CineStarCard extends PassDetails
         return [
             'description' => 'CineStar Card',
             'organizationName' => 'CineStar',
+            'logoText' => 'CineStar',
 
             'foregroundColor' => 'rgb(255, 255, 255)',
             'backgroundColor' => 'rgb(27, 32, 41)',
@@ -99,11 +103,11 @@ class CineStarCard extends PassDetails
                 ],
 
                 'auxiliaryFields' => [
-                    // [
-                    //     'key' => 'name',
-                    //     'label' => 'NAME',
-                    //     'value' => $this->name,
-                    // ],
+                    [
+                        'key' => 'name',
+                        'label' => 'NAME',
+                        'value' => implode(' ', [$this->first_name, $this->last_name]),
+                    ],
                 ],
 
                 'backFields' => [

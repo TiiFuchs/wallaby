@@ -94,7 +94,8 @@ class CineStarCardService
 
         $data = Cache::remember(
             'cinestarcard:profile:'.sha1($this->username),
-            now()->addMinutes(self::CACHE_TTL_MINUTES),
+            //            now()->addMinutes(self::CACHE_TTL_MINUTES),
+            now(),
             function () {
                 return [
                     ...$this->profileData(),
@@ -129,12 +130,20 @@ class CineStarCardService
                 continue;
             }
 
-            $label = $row->childNodes->item(0)->firstChild->textContent;
-            $value = $row->childNodes->item(1)->firstChild->textContent;
+            $labelNode = $row->childNodes->item(0)->firstChild;
+            $valueNode = $row->childNodes->item(1)->firstChild;
+
+            $label = $labelNode->textContent;
+            $value = $valueNode->textContent;
 
             if ($keyMap[$label] === 'premium_points') {
                 $value = parse_float($value);
+            } elseif ($keyMap[$label] === 'customer_number') {
+                preg_match('/(\w\d+)/', $value, $matches);
+                $value = $matches[1];
             }
+
+            ray($label, $value);
 
             $data[$keyMap[$label]] = $value;
         }
