@@ -94,8 +94,7 @@ class CineStarCardService
 
         $data = Cache::remember(
             'cinestarcard:profile:'.sha1($this->username),
-            //            now()->addMinutes(self::CACHE_TTL_MINUTES),
-            now(),
+            now()->addMinutes(self::CACHE_TTL_MINUTES),
             function () {
                 return [
                     ...$this->profileData(),
